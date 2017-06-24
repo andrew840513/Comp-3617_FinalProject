@@ -1,0 +1,65 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.comp3617.finalproject.StatsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
+        <Chronometer
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:textSize="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/startBtn"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="55dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="0.00"
+            android:textColor="#000000"
+            android:textSize="50dp" />
+
+        <TextView
+            android:id="@+id/durationLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DURATION"
+            android:textColor="#000000"
+            android:layout_alignBaseline="@+id/distanceLbl"
+            android:layout_alignBottom="@+id/distanceLbl"
+            android:layout_alignStart="@+id/duration" />
+
+        <TextView
+            android:id="@+id/distanceLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/distance"
+            android:layout_below="@+id/distance"
+            android:textColor="#000000"
+            android:text="DISTANCE (KM)" />
+
+        <Button
+            android:id="@+id/startBtn"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/distanceLbl"
+            android:layout_marginTop="14dp"
+            android:background="@color/statsBtn"
+            android:text="START WORKOUT"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</FrameLayout>

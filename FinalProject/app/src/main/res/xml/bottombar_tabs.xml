@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_track"
+        icon="@drawable/ic_track_workout"
+        title="Track workout"/>
+    <tab
+        id="@+id/tab_route"
+        icon="@drawable/ic_route"
+        title="Route"/>
+</tabs>
