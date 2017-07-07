@@ -58,7 +58,8 @@
             android:layout_marginTop="14dp"
             android:background="@color/statsBtn"
             android:text="START WORKOUT"
-            android:textColor="#FFFFFF"
+            android:textColor="@drawable/start_click"
+            android:clickable="true"
             android:textStyle="bold" />
     </RelativeLayout>
 

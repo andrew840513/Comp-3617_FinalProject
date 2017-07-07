@@ -3,6 +3,9 @@ package com.comp3617.finalproject;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +21,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 
@@ -26,7 +28,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     GoogleMap map;
     MapView mapView;
     View view;
-
+    double latitude;
+    double longtitude;
     public MapFragment() {
         // Required empty public constructor
     }
@@ -62,20 +65,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
         map = googleMap;
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
+        String bestProvider = "";
         googleMap.setMyLocationEnabled(true);
-        CameraPosition defaultPos = CameraPosition.fromLatLngZoom(new LatLng(49.1232,151.2086),19);
         LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(defaultPos));
+        if (isLocationEnabled()) {
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Criteria mCriteria = new Criteria();
+            bestProvider = String.valueOf(locationManager.getBestProvider(mCriteria, true));
+
+            Location mLocation = locationManager.getLastKnownLocation(bestProvider);
+            if (mLocation != null) {
+                final double currentLatitude = mLocation.getLatitude();
+                final double currentLongitude = mLocation.getLongitude();
+                LatLng loc1 = new LatLng(currentLatitude, currentLongitude);
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitude, currentLongitude), 19));
+            }
+        } else {
+            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            locationManager.requestLocationUpdates(bestProvider, 1000, 0, (LocationListener) this);
+        }
+
     }
 
     @Override
@@ -83,5 +97,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onAttachFragment(childFragment);
         StatsFragment s = (StatsFragment) childFragment;
         s.test();
+    }
+
+    public boolean isLocationEnabled(){
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        }
+        return true;
     }
 }

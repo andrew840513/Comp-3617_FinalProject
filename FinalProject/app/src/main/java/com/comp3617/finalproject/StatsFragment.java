@@ -1,5 +1,6 @@
 package com.comp3617.finalproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
@@ -36,14 +37,22 @@ public class StatsFragment extends Fragment {
                     startBtn.setText("STOP WORKOUT");
                     hasStart = true;
                 }else{
-                    startBtn.setText("START WORKOUT");
-                    hasStart = false;
                     chronometer.stop();
+                    Intent intent = new Intent(getContext(),ResultActivity.class);
+                    startActivity(intent);
                 }
             }
         });
 
         return fragmentView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startBtn.setText("START WORKOUT");
+        hasStart = false;
+        chronometer.setText("00:00");
     }
 
     public void test(){
