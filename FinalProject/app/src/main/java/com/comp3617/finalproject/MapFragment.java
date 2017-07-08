@@ -22,14 +22,20 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
     GoogleMap map;
     MapView mapView;
     View view;
-    double latitude;
-    double longtitude;
+    PolylineOptions path = new PolylineOptions();
+    Polyline myPath;
+    double lastLatitude = 0;
+    double lastLongitude = 0;
+    double totalDistent = 0;
+
     public MapFragment() {
         // Required empty public constructor
     }
@@ -78,7 +84,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 final double currentLatitude = mLocation.getLatitude();
                 final double currentLongitude = mLocation.getLongitude();
                 LatLng loc1 = new LatLng(currentLatitude, currentLongitude);
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitude, currentLongitude), 19));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc1, 19));
             }
         } else {
             if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -89,7 +95,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
             locationManager.requestLocationUpdates(bestProvider, 1000, 0, (LocationListener) this);
         }
-
+        startUpdate();
     }
 
     @Override
@@ -108,4 +114,70 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         return true;
     }
+
+    public void startUpdate(){
+        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        LocationManager locationManager = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
+        Criteria mCriteria = new Criteria();
+        String bestProvider = String.valueOf(locationManager.getBestProvider(mCriteria, true));
+        locationManager.requestLocationUpdates(bestProvider, 1000, 0, _());
+    }
+
+
+    public void updateMapsLocation(double currentLatitude, double currentLongitude){
+        LatLng loc1 = new LatLng(currentLatitude, currentLongitude);
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(loc1, 19));
+    }
+
+    public void drawLine(double currentLatitude, double currentLongitude){
+        int COLOR_BLACK_ARGB = 0xffff0000;
+        path.add(new LatLng(currentLatitude,currentLongitude));
+        myPath = map.addPolyline(path);
+        myPath.setColor(COLOR_BLACK_ARGB);
+        myPath.setWidth(20);
+    }
+    public LocationListener _(){
+
+        return new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                double currentLatitude = location.getLatitude();
+                double currentLongitude = location.getLongitude();
+                updateMapsLocation(currentLatitude,currentLongitude);
+                if(lastLatitude !=0 && lastLongitude!=0){
+                    final double latitude = Math.abs(lastLatitude - currentLatitude);
+                    final double longitude = Math.abs(lastLongitude - currentLongitude);
+                    totalDistent+= latitude+longitude;
+                    if(totalDistent >= 0.00005){
+                        drawLine(currentLatitude,currentLongitude);
+                    }
+                }else{
+                    lastLatitude = currentLatitude;
+                    lastLatitude = currentLatitude;
+                    drawLine(currentLatitude,currentLongitude);
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+    }
+
 }
