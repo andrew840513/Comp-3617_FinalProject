@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener,Onmap {
     GoogleMap map;
     MapView mapView;
     View view;
@@ -35,6 +36,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     double lastLatitude = 0;
     double lastLongitude = 0;
     double totalDistent = 0;
+    private LocationManager locationManager;
 
     public MapFragment() {
         // Required empty public constructor
@@ -46,6 +48,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_map, container, false);
+        Log.d("Andrew_Map",this.toString());
         return view;
     }
 
@@ -95,15 +98,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
             locationManager.requestLocationUpdates(bestProvider, 1000, 0, (LocationListener) this);
         }
-        startUpdate();
+        //startDrawing();
     }
 
-    @Override
-    public void onAttachFragment(Fragment childFragment) {
-        super.onAttachFragment(childFragment);
-        StatsFragment s = (StatsFragment) childFragment;
-        s.test();
-    }
+
 
     public boolean isLocationEnabled(){
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -114,22 +112,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         return true;
     }
+    public void test(){
+        Log.d("Andrew_Map",map.toString());
+    }
 
-    public void startUpdate(){
+    public void startDrawing(){
         if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        LocationManager locationManager = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
         Criteria mCriteria = new Criteria();
         String bestProvider = String.valueOf(locationManager.getBestProvider(mCriteria, true));
-        locationManager.requestLocationUpdates(bestProvider, 1000, 0, _());
+        locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
+    }
+
+    public void stopDrawing(){
+        locationManager = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
+        locationManager.removeUpdates(this);
     }
 
 
-    public void updateMapsLocation(double currentLatitude, double currentLongitude){
+    public void moveToCurrentLocation(double currentLatitude, double currentLongitude){
         LatLng loc1 = new LatLng(currentLatitude, currentLongitude);
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(loc1, 19));
     }
@@ -141,43 +147,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         myPath.setColor(COLOR_BLACK_ARGB);
         myPath.setWidth(20);
     }
-    public LocationListener _(){
 
-        return new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                double currentLatitude = location.getLatitude();
-                double currentLongitude = location.getLongitude();
-                updateMapsLocation(currentLatitude,currentLongitude);
-                if(lastLatitude !=0 && lastLongitude!=0){
-                    final double latitude = Math.abs(lastLatitude - currentLatitude);
-                    final double longitude = Math.abs(lastLongitude - currentLongitude);
-                    totalDistent+= latitude+longitude;
-                    if(totalDistent >= 0.00005){
-                        drawLine(currentLatitude,currentLongitude);
-                    }
-                }else{
-                    lastLatitude = currentLatitude;
-                    lastLatitude = currentLatitude;
-                    drawLine(currentLatitude,currentLongitude);
-                }
+    @Override
+    public void onLocationChanged(Location location) {
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
+        moveToCurrentLocation(currentLatitude,currentLongitude);
+        if(lastLatitude !=0 && lastLongitude!=0){
+            final double latitude = Math.abs(lastLatitude - currentLatitude);
+            final double longitude = Math.abs(lastLongitude - currentLongitude);
+            totalDistent+= latitude+longitude;
+            if(totalDistent >= 0.00005){
+                drawLine(currentLatitude,currentLongitude);
             }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
+        }else{
+            lastLatitude = currentLatitude;
+            lastLatitude = currentLatitude;
+            drawLine(currentLatitude,currentLongitude);
+        }
     }
 
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }

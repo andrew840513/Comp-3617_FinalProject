@@ -14,10 +14,10 @@ public class StatsFragment extends Fragment {
     private Chronometer chronometer;
     private Boolean hasStart = false;
     private Button startBtn;
+
     public StatsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,8 +36,10 @@ public class StatsFragment extends Fragment {
                     chronometer.start();
                     startBtn.setText("STOP WORKOUT");
                     hasStart = true;
+                    test();
                 }else{
                     chronometer.stop();
+                    test1();
                     Intent intent = new Intent(getContext(),ResultActivity.class);
                     startActivity(intent);
                 }
@@ -56,6 +58,12 @@ public class StatsFragment extends Fragment {
     }
 
     public void test(){
+        MapFragment fragment = (MapFragment) getParentFragment().getChildFragmentManager().findFragmentById(R.id.fragment2);
+        fragment.startDrawing();
+    }
 
+    public void test1(){
+        MapFragment fragment = (MapFragment) getParentFragment().getChildFragmentManager().findFragmentById(R.id.fragment2);
+        fragment.stopDrawing();
     }
 }
