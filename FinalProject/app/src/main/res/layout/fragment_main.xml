@@ -7,7 +7,7 @@
     <!-- TODO: Update blank fragment layout -->
 
     <fragment
-        android:id="@+id/fragment2"
+        android:id="@+id/main_map_fragment"
         android:name="com.comp3617.finalproject.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +18,7 @@
         android:layout_height="match_parent">
 
         <fragment
-            android:id="@+id/fragment3"
+            android:id="@+id/main_stats_fragment"
             android:name="com.comp3617.finalproject.StatsFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -27,7 +27,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener,Onmap {
+public class MapFragment extends Fragment implements OnMapReadyCallback, StartWorkoutListener,GoogleMap.OnCameraMoveStartedListener,GoogleMap.OnMyLocationButtonClickListener {
     GoogleMap map;
     MapView mapView;
     View view;
@@ -35,9 +35,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     Polyline myPath;
     double lastLatitude = 0;
     double lastLongitude = 0;
-    double totalDistent = 0;
-    private LocationManager locationManager;
-
+    double totalDistant = 0;
+    boolean dragging = false;
+    boolean didShowMylocation;
+    private LocationServices locationServices;
     public MapFragment() {
         // Required empty public constructor
     }
@@ -74,9 +75,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
         map = googleMap;
+        map.setOnCameraMoveStartedListener(this);
+        map.setOnMyLocationButtonClickListener(this);
         String bestProvider = "";
         googleMap.setMyLocationEnabled(true);
+
         LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+
         if (isLocationEnabled()) {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             Criteria mCriteria = new Criteria();
@@ -87,7 +92,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 final double currentLatitude = mLocation.getLatitude();
                 final double currentLongitude = mLocation.getLongitude();
                 LatLng loc1 = new LatLng(currentLatitude, currentLongitude);
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc1, 19));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc1, 15));
             }
         } else {
             if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -98,10 +103,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             }
             locationManager.requestLocationUpdates(bestProvider, 1000, 0, (LocationListener) this);
         }
-        //startDrawing();
     }
 
+    @Override
+    public void onCameraMoveStarted(int reason) {
+        if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
+            Log.d("Andrew","I moved camera");
+            dragging = true;
+        }
+    }
 
+    @Override
+    public boolean onMyLocationButtonClick() {
+        dragging = false;
+        return false;
+    }
 
     public boolean isLocationEnabled(){
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -112,28 +128,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         }
         return true;
     }
-    public void test(){
-        Log.d("Andrew_Map",map.toString());
-    }
-
-    public void startDrawing(){
-        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        locationManager = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
-        Criteria mCriteria = new Criteria();
-        String bestProvider = String.valueOf(locationManager.getBestProvider(mCriteria, true));
-        locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
-    }
-
-    public void stopDrawing(){
-        locationManager = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.removeUpdates(this);
-    }
-
 
     public void moveToCurrentLocation(double currentLatitude, double currentLongitude){
         LatLng loc1 = new LatLng(currentLatitude, currentLongitude);
@@ -149,15 +143,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
-        moveToCurrentLocation(currentLatitude,currentLongitude);
+    public void startWorkout() {
+        double currentLatitude = locationServices.getLatitude();
+        double currentLongitude = locationServices.getLongitude();
+        if(!didShowMylocation){
+            moveToCurrentLocation(currentLatitude,currentLongitude);
+            didShowMylocation = true;
+        }
+
         if(lastLatitude !=0 && lastLongitude!=0){
             final double latitude = Math.abs(lastLatitude - currentLatitude);
             final double longitude = Math.abs(lastLongitude - currentLongitude);
-            totalDistent+= latitude+longitude;
-            if(totalDistent >= 0.00005){
+            totalDistant += latitude+longitude;
+            if(totalDistant >= 0.00005){
                 drawLine(currentLatitude,currentLongitude);
             }
         }else{
@@ -165,20 +163,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             lastLatitude = currentLatitude;
             drawLine(currentLatitude,currentLongitude);
         }
+        if(!dragging){
+            moveToCurrentLocation(currentLatitude,currentLongitude);
+        }
     }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
+    public void setLocationServices(LocationServices locationServices) {
+        this.locationServices = locationServices;
     }
 }
