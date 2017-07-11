@@ -10,4 +10,7 @@
     <string name="stats_distanceText">0.0</string>
     <string name="stats_distanceLbl">DISTANCE (KM)</string>
     <string name="stats_durationLbl">DURATION</string>
+    <string name="checkGPS_title">We need your location</string>
+    <string name="checkGPS_desc">In order to track your bike activity</string>
+    <string name="checkGPS_btn">Enable GPS</string>
 </resources>

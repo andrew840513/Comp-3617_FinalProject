@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#363636">
+
+    <ImageView
+        android:id="@+id/checkGPS_icon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:srcCompat="@drawable/ic_location"
+        android:layout_above="@+id/checkGPS_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="13dp" />
+
+    <TextView
+        android:id="@+id/checkGPS_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/checkGPS_title"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/checkGPS_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkGPS_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="@string/checkGPS_desc"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/checkGPS_Btn"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="39dp"
+        android:background="#DE8F1F"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/checkGPS_btn"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+</RelativeLayout>

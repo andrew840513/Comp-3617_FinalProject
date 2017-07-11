@@ -46,10 +46,6 @@ public class StatsFragment extends Fragment implements Observer{
     @Override
     public void onResume() {
         super.onResume();
-        startBtn.setText(R.string.stats_startworkout);
-        hasStart = false;
-        chronometer.setText(R.string.stats_durationText);
-        distance.setText(R.string.stats_distanceText);
     }
 
     public View.OnClickListener onstartBtnClick(){
@@ -64,6 +60,10 @@ public class StatsFragment extends Fragment implements Observer{
                     locationServices.start();
                 }else{
                     chronometer.stop();
+                    startBtn.setText(R.string.stats_startworkout);
+                    hasStart = false;
+                    chronometer.setText(R.string.stats_durationText);
+                    distance.setText(R.string.stats_distanceText);
                     locationServices.stop();
                     fragment.map.clear();
                     Intent intent = new Intent(getContext(),ResultActivity.class);
