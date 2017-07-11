@@ -18,6 +18,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
+//        LocationRecord l = new LocationRecord();
+//        l.addWpt(49.2838482,-123.114134,1.0);
+//        l.endDocument();
+//        l.saveFile(getApplicationContext());
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setTabTitleTextAppearance(R.style.bottomBarTextView);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {

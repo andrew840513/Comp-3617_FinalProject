@@ -14,22 +14,22 @@
             android:id="@+id/duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
+            android:layout_marginStart="15dp"
             android:textSize="50sp"
             android:text="@string/stats_durationText"
-            android:layout_alignParentTop="true"
+            android:layout_above="@+id/durationLbl"
             android:layout_alignParentStart="true" />
         <TextView
             android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/startBtn"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="55dp"
+            android:layout_marginEnd="14dp"
             android:fontFamily="sans-serif-smallcaps"
             android:text="@string/stats_distanceText"
             android:textColor="@color/black"
-            android:textSize="50sp" />
+            android:textSize="50sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/durationLbl"

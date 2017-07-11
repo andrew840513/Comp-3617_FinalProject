@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+
+import com.roughike.bottombar.BottomBar;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -39,7 +42,6 @@ public class StatsFragment extends Fragment implements Observer{
         fragment.setLocationServices(locationServices);
 
         startBtn.setOnClickListener(onstartBtnClick());
-
         return fragmentView;
     }
 
@@ -55,10 +57,18 @@ public class StatsFragment extends Fragment implements Observer{
                 if(!hasStart){
                     chronometer.setBase(SystemClock.elapsedRealtime());
                     chronometer.start();
+                    fragment.resetPath();
                     startBtn.setText(R.string.stats_stopworkout);
+                    BottomBar bottomBar = (BottomBar) getActivity().findViewById(R.id.bottomBar);
+                    bottomBar.setVisibility(View.GONE);
                     hasStart = true;
                     locationServices.start();
                 }else{
+                    Intent intent = new Intent(getContext(),ResultActivity.class);
+                    long elapsedSec = (SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
+                    Log.d("Andrew",Long.toString(elapsedSec));
+                    intent.putExtra("seconds",elapsedSec);
+                    startActivity(intent);
                     chronometer.stop();
                     startBtn.setText(R.string.stats_startworkout);
                     hasStart = false;
@@ -66,8 +76,8 @@ public class StatsFragment extends Fragment implements Observer{
                     distance.setText(R.string.stats_distanceText);
                     locationServices.stop();
                     fragment.map.clear();
-                    Intent intent = new Intent(getContext(),ResultActivity.class);
-                    startActivity(intent);
+                    BottomBar bottomBar = (BottomBar) getActivity().findViewById(R.id.bottomBar);
+                    bottomBar.setVisibility(View.VISIBLE);
                 }
             }
         };
