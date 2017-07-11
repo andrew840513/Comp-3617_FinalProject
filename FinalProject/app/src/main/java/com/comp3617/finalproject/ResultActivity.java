@@ -6,21 +6,22 @@ import android.view.View;
 import android.widget.TextView;
 
 public class ResultActivity extends AppCompatActivity {
-    TextView discardBtn;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_result);
-        discardBtn = (TextView) findViewById(R.id.result_discard);
-        discardBtn.setOnClickListener(onDiscardClick());
-    }
+	TextView discardBtn;
 
-    public View.OnClickListener onDiscardClick(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        };
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_result);
+		discardBtn = (TextView) findViewById(R.id.result_discard);
+		discardBtn.setOnClickListener(onDiscardClick());
+	}
+
+	public View.OnClickListener onDiscardClick() {
+		return new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		};
+	}
 }

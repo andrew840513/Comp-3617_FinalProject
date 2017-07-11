@@ -20,79 +20,79 @@ import static android.content.Context.LOCATION_SERVICE;
  */
 class LocationServices extends Observable implements LocationListener {
 
-    private StartWorkoutListener listener;
-    private LocationManager locationManager;
-    private Context ctx;
-    private Observer observer;
-    private double distance = 0.0;
-    private double latitude;
-    private double longitude;
-    private Location startLocation;
+	private StartWorkoutListener listener;
+	private LocationManager locationManager;
+	private Context ctx;
+	private Observer observer;
+	private double distance = 0.0;
+	private double latitude;
+	private double longitude;
+	private Location startLocation;
 
-    LocationServices(StartWorkoutListener listener, Context context, Observer o) {
-        this.listener = listener;
-        this.ctx = context;
-        this.observer = o;
-    }
+	LocationServices(StartWorkoutListener listener, Context context, Observer o) {
+		this.listener = listener;
+		this.ctx = context;
+		this.observer = o;
+	}
 
-    void start(){
-        if (ActivityCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        locationManager = (LocationManager)ctx.getSystemService(LOCATION_SERVICE);
-        Criteria mCriteria = new Criteria();
-        String bestProvider = String.valueOf(locationManager.getBestProvider(mCriteria, true));
-        this.addObserver(observer);
-        locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
+	void start() {
+		if (ActivityCompat.checkSelfPermission(ctx,
+				android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+				&& ActivityCompat.checkSelfPermission(ctx,
+						android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			return;
+		}
+		locationManager = (LocationManager) ctx.getSystemService(LOCATION_SERVICE);
+		Criteria mCriteria = new Criteria();
+		String bestProvider = String.valueOf(locationManager.getBestProvider(mCriteria, true));
+		this.addObserver(observer);
+		locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
 
-    }
+	}
 
-    void stop(){
-        locationManager.removeUpdates(this);
-    }
+	void stop() {
+		locationManager.removeUpdates(this);
+	}
 
-    String getDistance() {
-        return String.format(Locale.getDefault(),"%.2f",distance/1000);
-    }
+	String getDistance() {
+		return String.format(Locale.getDefault(), "%.2f", distance / 1000);
+	}
 
-    double getLatitude() {
-        return latitude;
-    }
+	double getLatitude() {
+		return latitude;
+	}
 
-    double getLongitude() {
-        return longitude;
-    }
+	double getLongitude() {
+		return longitude;
+	}
 
-    @Override
-    public void onLocationChanged(Location location) {
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        if(startLocation == null){
-            startLocation = location;
-        }
-        float distanceBetween = location.distanceTo(startLocation);
-        distance += distanceBetween;
-        startLocation = location;
-        listener.startWorkout();
-        setChanged();
-        notifyObservers();
-    }
+	@Override
+	public void onLocationChanged(Location location) {
+		latitude = location.getLatitude();
+		longitude = location.getLongitude();
+		if (startLocation == null) {
+			startLocation = location;
+		}
+		float distanceBetween = location.distanceTo(startLocation);
+		distance += distanceBetween;
+		startLocation = location;
+		listener.startWorkout();
+		setChanged();
+		notifyObservers();
+	}
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
 
-    }
+	}
 
-    @Override
-    public void onProviderEnabled(String provider) {
+	@Override
+	public void onProviderEnabled(String provider) {
 
-    }
+	}
 
-    @Override
-    public void onProviderDisabled(String provider) {
+	@Override
+	public void onProviderDisabled(String provider) {
 
-    }
+	}
 }
