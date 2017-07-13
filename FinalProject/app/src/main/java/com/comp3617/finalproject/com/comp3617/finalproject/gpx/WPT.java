@@ -28,10 +28,15 @@ public class WPT {
 	@Element(name = "time")
 	private String time;
 
-	public WPT(double latitude, double longitude, double elevation) {
+	public WPT(@Attribute(name = "lat") double latitude, @Attribute(name = "lon") double longitude,
+			@Element(name = "ele") double elevation, @Element(name = "time") String time) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.elevation = elevation;
+		this.time = time;
+	}
+
+	public WPT(double latitude, double longitude, double elevation) {
 		setTime();
 	}
 
@@ -52,7 +57,7 @@ public class WPT {
 		return df.parse(time);
 	}
 
-	private void setTime() {
+	public void setTime() {
 		TimeZone tz = TimeZone.getTimeZone("UTC");
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
 		df.setTimeZone(tz);

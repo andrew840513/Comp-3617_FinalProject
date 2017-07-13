@@ -21,8 +21,13 @@ public class GPX {
 	@ElementList(name = "wpt", inline = true)
 	private List<WPT> wpt;
 
-	public GPX(List<WPT> wpt) {
+	public GPX(@ElementList(name = "wpt", inline = true) List<WPT> wpt,
+			@Attribute(name = "schemaLocation") String schemaLocation) {
 		this.wpt = wpt;
+	}
+
+	public GPX(List<WPT> wpts) {
+		this.wpt = wpts;
 	}
 
 	public String getSchemaLocation() {

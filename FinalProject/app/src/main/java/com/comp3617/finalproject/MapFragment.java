@@ -48,7 +48,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		view = inflater.inflate(R.layout.fragment_map, container, false);
-		Log.d("Andrew_Map", this.toString());
 		return view;
 	}
 
@@ -149,6 +148,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 
 	public void resetPath() {
 		path = new PolylineOptions();
+	}
+
+	public PolylineOptions getPath() {
+		return path;
 	}
 
 	@Override

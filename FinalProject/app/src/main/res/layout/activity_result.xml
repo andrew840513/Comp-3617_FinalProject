@@ -21,6 +21,7 @@
             android:gravity="start"
             android:text="Discard"
             android:textColor="@drawable/discard_click" />
+
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
@@ -36,6 +37,7 @@
         android:layout_width="fill_parent"
         android:layout_height="1dip"
         android:background="#AAAAAA" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,7 +62,7 @@
     </LinearLayout>
 
     <fragment
-        android:id="@+id/fragment"
+        android:id="@+id/result_map"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="200dp"

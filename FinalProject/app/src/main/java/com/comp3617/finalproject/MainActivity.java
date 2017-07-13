@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.comp3617.finalproject.com.comp3617.finalproject.gpx.GPX;
 import com.comp3617.finalproject.com.comp3617.finalproject.gpx.WPT;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -23,14 +22,14 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         LocationRecord l = new LocationRecord(getApplicationContext());
         l.getListFiles();
-        GPX gpx = l.readFile("1499876295507Test.gpx");
-        for (WPT wpt : gpx.getWpt()) {
-            try {
-                Log.d("WPT", wpt.getTime().toString());
-            } catch (Exception e) {
-                Log.e("WTP_err", e.getMessage());
+        try {
+            for (WPT wpts : l.readFile("1499877974638Test123").getWpt()) {
+                Log.d("Andrew", Double.toString(wpts.getLongitude()));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setTabTitleTextAppearance(R.style.bottomBarTextView);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
