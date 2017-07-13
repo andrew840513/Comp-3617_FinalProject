@@ -15,16 +15,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LocationRecord {
+class LocationRecord {
     static Map<String, String> attributes = new HashMap<>();
     static XmlSerializer root;
-    Context context;
+    private Context context;
 
-    public LocationRecord(Context context) {
+    LocationRecord(Context context) {
         this.context = context;
     }
 
-    public void saveFile(String name, GPX gpx) {
+    void saveFile(String name, GPX gpx) {
         String fileName = new Date().getTime() + name;
         File file = new File(context.getFilesDir(), fileName + ".gpx");
         Serializer serializer = new Persister();
@@ -36,7 +36,7 @@ public class LocationRecord {
 
     }
 
-    public GPX readFile(String fileName) {
+    GPX readFile(String fileName) {
         Serializer serializer = new Persister();
         File sourse = new File(context.getFilesDir(), fileName + ".gpx");
         try {
@@ -47,7 +47,7 @@ public class LocationRecord {
         return null;
     }
 
-    public void deleteFile(String fileName) {
+    void deleteFile(String fileName) {
         File file = new File(context.getFilesDir(), fileName + ".gpx");
 
         if (file.delete()) {
@@ -57,7 +57,7 @@ public class LocationRecord {
         }
     }
 
-    public void getListFiles() {
+    void getListFiles() {
         ArrayList<String> inFiles = new ArrayList<String>();
         File[] files = context.getFilesDir().listFiles();
         for (File file : files) {

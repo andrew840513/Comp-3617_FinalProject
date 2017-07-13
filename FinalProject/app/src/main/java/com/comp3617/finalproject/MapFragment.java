@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.comp3617.finalproject.com.comp3617.finalproject.gpx.GPX;
+import com.comp3617.finalproject.com.comp3617.finalproject.gpx.WPT;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -26,6 +28,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapFragment extends Fragment implements OnMapReadyCallback, StartWorkoutListener,
 		GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnMyLocationButtonClickListener {
 	GoogleMap map;
@@ -33,13 +38,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 	View view;
 	PolylineOptions path = new PolylineOptions();
 	Polyline myPath;
-	double lastLatitude = 0;
-	double lastLongitude = 0;
-	double totalDistant = 0;
-	boolean dragging = false;
-	boolean didShowMylocation;
+	private double lastLatitude = 0;
+    private double lastLongitude = 0;
+    private double totalDistant = 0;
+    private boolean dragging = false;
+    private boolean didShowMylocation;
 	private LocationServices locationServices;
-
+    private GPX gpx;
+    private List<WPT> wptList;
 	public MapFragment() {
 		// Required empty public constructor
 	}
@@ -146,18 +152,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 		myPath.setWidth(20);
 	}
 
-	public void resetPath() {
-		path = new PolylineOptions();
-	}
-
 	public PolylineOptions getPath() {
 		return path;
+	}
+
+    public GPX getGpx() {
+        return gpx;
+    }
+
+    @Override
+	public void onStartWorkout() {
+        path = new PolylineOptions();
+        wptList = new ArrayList<>();
 	}
 
 	@Override
 	public void startWorkout() {
 		double currentLatitude = locationServices.getLatitude();
 		double currentLongitude = locationServices.getLongitude();
+        double elevation = locationServices.getElevation();
+        Log.d("Andrew","lat:"+currentLatitude+"lon:"+currentLongitude+"ele:"+elevation);
+        WPT wpt = new WPT(currentLatitude,currentLongitude,elevation);
+        wptList.add(wpt);
 		if (!didShowMylocation) {
 			moveToCurrentLocation(currentLatitude, currentLongitude);
 			didShowMylocation = true;
@@ -172,7 +188,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 			}
 		} else {
 			lastLatitude = currentLatitude;
-			lastLatitude = currentLatitude;
+			lastLongitude = currentLongitude;
 			drawLine(currentLatitude, currentLongitude);
 		}
 		if (!dragging) {
@@ -180,7 +196,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 		}
 	}
 
-	public void setLocationServices(LocationServices locationServices) {
+    @Override
+    public void onStopWorkout() {
+        gpx = new GPX(wptList);
+        GPX.setGpx(gpx);
+        map.clear();
+    }
+
+    public void setLocationServices(LocationServices locationServices) {
 		this.locationServices = locationServices;
 	}
 }

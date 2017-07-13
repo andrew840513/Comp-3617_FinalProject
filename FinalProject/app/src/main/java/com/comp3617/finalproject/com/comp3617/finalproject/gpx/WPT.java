@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -37,6 +38,9 @@ public class WPT {
 	}
 
 	public WPT(double latitude, double longitude, double elevation) {
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.elevation = elevation;
 		setTime();
 	}
 
@@ -53,13 +57,13 @@ public class WPT {
 	}
 
 	public Date getTime() throws ParseException {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.getDefault());
 		return df.parse(time);
 	}
 
-	public void setTime() {
+	private void setTime() {
 		TimeZone tz = TimeZone.getTimeZone("UTC");
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()); // Quoted "Z" to indicate UTC, no timezone offset
 		df.setTimeZone(tz);
 		this.time = df.format(new Date());
 	}

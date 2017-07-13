@@ -28,6 +28,7 @@ class LocationServices extends Observable implements LocationListener {
 	private double latitude;
 	private double longitude;
 	private Location startLocation;
+	private double elevation;
 
 	LocationServices(StartWorkoutListener listener, Context context, Observer o) {
 		this.listener = listener;
@@ -66,10 +67,15 @@ class LocationServices extends Observable implements LocationListener {
 		return longitude;
 	}
 
+	double getElevation() {
+		return elevation;
+	}
+
 	@Override
 	public void onLocationChanged(Location location) {
 		latitude = location.getLatitude();
 		longitude = location.getLongitude();
+		elevation = location.getAltitude();
 		if (startLocation == null) {
 			startLocation = location;
 		}

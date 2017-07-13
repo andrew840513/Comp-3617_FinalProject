@@ -14,9 +14,12 @@ import java.util.List;
 @Root(name = "gpx")
 @NamespaceList({ @Namespace(reference = "http://www.topografix.com/GPX/1/1"),
 		@Namespace(reference = "http://www.w3.org/2001/XMLSchema-instance", prefix = "xsi") })
-public class GPX {
+
+public class GPX{
+	private static GPX gpx;
+
 	@Attribute(name = "schemaLocation")
-	static final String schemaLocation = "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd";
+	private static final String schemaLocation = "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd";
 
 	@ElementList(name = "wpt", inline = true)
 	private List<WPT> wpt;
@@ -36,5 +39,17 @@ public class GPX {
 
 	public List<WPT> getWpt() {
 		return wpt;
+	}
+
+	public void setWpt(List<WPT> wpt) {
+		this.wpt = wpt;
+	}
+
+	public static GPX getGpx() {
+		return gpx;
+	}
+
+	public static void setGpx(GPX gpx) {
+		GPX.gpx = gpx;
 	}
 }
