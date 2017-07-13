@@ -97,6 +97,7 @@ public class StatsFragment extends Fragment implements Observer, StartWorkoutLis
 		Intent intent = new Intent(getContext(), ResultActivity.class);
 		long elapsedSec = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
 		intent.putExtra("seconds", elapsedSec);
+		intent.putExtra("distance", distance.getText());
 		intent.putExtra("path", mapFragment.getPath());
 		startActivity(intent);
 
