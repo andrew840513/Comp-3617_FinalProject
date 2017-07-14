@@ -4,14 +4,8 @@
     android:layout_height="match_parent"
     tools:context="com.comp3617.finalproject.RouteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <!-- TODO: Update blank fragment layout -->
-
-    <Button
-        android:id="@+id/btnDemo"
+    <ListView
+        android:id="@+id/route_list_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:text="I am Fragment" />
-
+        android:layout_height="match_parent" />
 </FrameLayout>

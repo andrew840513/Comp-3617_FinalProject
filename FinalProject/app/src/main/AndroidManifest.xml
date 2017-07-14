@@ -4,7 +4,9 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
+        android:name=".FinalProject"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,7 +26,11 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".ResultActivity" />
-        <activity android:name=".CheckGPSActivity"></activity>
+        <activity android:name=".CheckGPSActivity" />
+        <activity
+            android:name=".RecordActivity"
+            android:label="@string/title_activity_record"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

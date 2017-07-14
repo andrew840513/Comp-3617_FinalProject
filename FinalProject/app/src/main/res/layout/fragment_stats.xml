@@ -58,7 +58,7 @@
             android:layout_below="@+id/distanceLbl"
             android:layout_marginTop="14dp"
             android:background="@color/statsBtn"
-            android:text="@string/stats_startworkout"
+            android:text="@string/stats_startWorkout"
             android:textColor="@drawable/start_click"
             android:clickable="true"
             android:textStyle="bold" />

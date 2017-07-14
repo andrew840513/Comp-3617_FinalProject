@@ -39,6 +39,7 @@
         android:background="#AAAAAA" />
 
     <LinearLayout
+        android:id="@+id/reslut_nameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -52,8 +53,8 @@
             android:text="Name" />
 
         <EditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
+            android:id="@+id/result_workoutName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
@@ -63,10 +64,11 @@
 
     <fragment
         android:id="@+id/result_map"
-        android:name="com.google.android.gms.maps.MapFragment"
+        android:name="com.comp3617.finalproject.ResultMapFragment"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        tools:layout="@layout/fragment_result_map"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -139,6 +141,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/result_saveBtnLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -1,9 +1,7 @@
 package com.comp3617.finalproject;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -12,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Polyline;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +31,7 @@ public class ResultMapFragment extends Fragment implements OnMapReadyCallback {
 	View view;
 	MapView mapView;
 	GoogleMap map;
-
+	Polyline myPath;
 	public ResultMapFragment() {
 	}
 
@@ -45,7 +47,12 @@ public class ResultMapFragment extends Fragment implements OnMapReadyCallback {
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		mapView = (MapView) view.findViewById(R.id.result_map);
+		mapView = (MapView) view.findViewById(R.id.map_result);
+		if (mapView != null) {
+			mapView.onCreate(null);
+			mapView.onResume();
+			mapView.getMapAsync(this);
+		}
 	}
 
 	@Override
@@ -60,5 +67,30 @@ public class ResultMapFragment extends Fragment implements OnMapReadyCallback {
 			return;
 		}
 		map.setMyLocationEnabled(false);
+		//addPath();
+		//moveInBounds();
 	}
+
+	void addPath(){
+		ResultActivity activity = (ResultActivity)getActivity();
+		int COLOR_BLACK_ARGB = 0xff0000ff;
+		myPath = map.addPolyline(activity.getPath());
+		myPath.setColor(COLOR_BLACK_ARGB);
+		myPath.setWidth(20);
+	}
+
+	void moveInBounds(){
+		LatLngBounds.Builder builder = new LatLngBounds.Builder();
+		for(int i = 0; i < myPath.getPoints().size();i++){
+			builder.include(myPath.getPoints().get(i));
+		}
+
+
+		LatLngBounds bounds = builder.build();
+		int padding = 50; // offset from edges of the map in pixels
+
+		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+		map.animateCamera(cu);
+	}
+
 }

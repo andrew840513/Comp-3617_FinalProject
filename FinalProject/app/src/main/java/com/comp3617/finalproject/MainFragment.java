@@ -31,8 +31,7 @@ public class MainFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
 		if (checkPermission() && isLocationServiceEnabled()) {
-			View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
-			return fragmentView;
+			return inflater.inflate(R.layout.fragment_main, container, false);
 		} else {
 			Intent intent = new Intent(getActivity(), CheckGPSActivity.class);
 			startActivity(intent);

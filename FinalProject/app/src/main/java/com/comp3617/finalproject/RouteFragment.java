@@ -5,10 +5,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ListView;
+
+import com.comp3617.finalproject.database.Database;
+
+import io.realm.Realm;
 
 public class RouteFragment extends Fragment {
+	ListView workoutListView;
+	Realm realm = Realm.getDefaultInstance();
+	WorkoutList1Adapter adapter;
+	Database database = new Database(realm);
 	public RouteFragment() {
 		// Required empty public constructor
 	}
@@ -18,15 +25,9 @@ public class RouteFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View fragmentView = inflater.inflate(R.layout.fragment_route, container, false);
 
-		Button btnDemo = (Button) fragmentView.findViewById(R.id.btnDemo);
-
-		btnDemo.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(getActivity(), "Fragment button clicked", Toast.LENGTH_LONG).show();
-			}
-		});
-
+		workoutListView = (ListView) fragmentView.findViewById(R.id.route_list_view);
+		adapter = new WorkoutList1Adapter(getContext(),database.getAllWorkout());
+		workoutListView.setAdapter(adapter);
 		return fragmentView;
 	}
 }

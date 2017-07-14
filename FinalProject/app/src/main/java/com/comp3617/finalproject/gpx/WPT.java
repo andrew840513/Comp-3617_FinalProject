@@ -1,4 +1,4 @@
-package com.comp3617.finalproject.com.comp3617.finalproject.gpx;
+package com.comp3617.finalproject.gpx;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;

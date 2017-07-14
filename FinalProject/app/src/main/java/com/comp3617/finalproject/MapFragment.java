@@ -17,8 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.comp3617.finalproject.com.comp3617.finalproject.gpx.GPX;
-import com.comp3617.finalproject.com.comp3617.finalproject.gpx.WPT;
+import com.comp3617.finalproject.gpx.GPX;
+import com.comp3617.finalproject.gpx.WPT;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -60,7 +60,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
 		mapView = (MapView) view.findViewById(R.id.map);
 		if (mapView != null) {
 			mapView.onCreate(null);
@@ -171,7 +170,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 		double currentLatitude = locationServices.getLatitude();
 		double currentLongitude = locationServices.getLongitude();
         double elevation = locationServices.getElevation();
-        Log.d("Andrew","lat:"+currentLatitude+"lon:"+currentLongitude+"ele:"+elevation);
         WPT wpt = new WPT(currentLatitude,currentLongitude,elevation);
         wptList.add(wpt);
 		if (!didShowMylocation) {

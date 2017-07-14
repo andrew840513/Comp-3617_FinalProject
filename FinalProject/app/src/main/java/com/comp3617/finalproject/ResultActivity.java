@@ -5,38 +5,66 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import com.comp3617.finalproject.com.comp3617.finalproject.gpx.GPX;
+import com.comp3617.finalproject.database.Database;
+import com.comp3617.finalproject.gpx.GPX;
+import com.comp3617.finalproject.model.Workout;
+import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.Date;
 import java.util.Locale;
 
+import io.realm.Realm;
+
 public class ResultActivity extends AppCompatActivity {
+	private long seconds;
+	private double kms;
+	EditText workoutName;
 	TextView discardBtn;
-	TextView duration;
-	TextView distance;
-	TextView averageSpeed;
+	TextView durationText;
+	TextView distanceText;
+	TextView averageSpeedText;
+	Button saveBtn;
+	PolylineOptions path;
+	Realm realm = Realm.getDefaultInstance();
+	Database database = new Database(realm);
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result);
 		Intent intent = getIntent();
+		path = intent.getExtras().getParcelable("path");
 
-		duration = (TextView) findViewById(R.id.result_duration);
-		distance = (TextView) findViewById(R.id.result_distance);
+		workoutName = (EditText) findViewById(R.id.result_workoutName);
+		durationText = (TextView) findViewById(R.id.result_duration);
+		distanceText = (TextView) findViewById(R.id.result_distance);
 		discardBtn = (TextView) findViewById(R.id.result_discard);
-		averageSpeed = (TextView) findViewById(R.id.result_averageSpeed);
+		averageSpeedText = (TextView) findViewById(R.id.result_averageSpeed);
+		saveBtn = (Button) findViewById(R.id.result_saveBtn);
+
+		seconds = intent.getLongExtra("seconds",0);
+		kms = Double.parseDouble(intent.getStringExtra("distanceText"));
 		discardBtn.setOnClickListener(onDiscardClick());
+		saveBtn.setOnClickListener(onSaveClick());
 
-		//get Current Gpx that load
-		GPX gpx = GPX.getGpx();
+		durationText.setText(convertTime(seconds));
+		distanceText.setText(String.format("%skm",kms));
+		double averageSpeed = kms / (seconds/3600.0);
+		averageSpeedText.setText(String.format(Locale.getDefault(),"%.2fkm/h",averageSpeed));
+	}
 
-		duration.setText(String.format(Locale.getDefault(),"%d",intent.getLongExtra("seconds",0)));
-		distance.setText(String.format("%skm",intent.getStringExtra("distance")));
-		double averageSpeedc = Double.parseDouble(intent.getStringExtra("distance")) / (intent.getLongExtra("seconds",0)/3600.0);
-		Log.d("Andrew_parse",Double.parseDouble(intent.getStringExtra("distance"))+"");
-		Log.d("Andrew_parse",(intent.getLongExtra("seconds",0)/3600.0)+"");
-		averageSpeed.setText(String.format(Locale.getDefault(),"%.2fkm/h",averageSpeedc));
+	public String convertTime(Long time){
+		int hours = time.intValue() / 3600;
+		int minutes = time.intValue() / 60 % 60;
+		int seconds = time.intValue() % 60;
+		return String.format(Locale.getDefault(),"%02d:%02d:%02d", hours, minutes, seconds);
+	}
+
+	public PolylineOptions getPath() {
+		return path;
 	}
 
 	public View.OnClickListener onDiscardClick() {
@@ -47,4 +75,25 @@ public class ResultActivity extends AppCompatActivity {
 			}
 		};
 	}
+
+	public View.OnClickListener onSaveClick(){
+		return new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				LocationRecord locationRecord = new LocationRecord(getApplicationContext());
+				Workout workout = new Workout();
+				String name = workoutName.getText().toString();
+				//T/ODO remove deleteAllfile
+				//locationRecord.deleteAllfiles();
+				String fileName = locationRecord.saveFile(name, GPX.getGpx());
+
+				workout.setWorkout(fileName,name,new Date(),kms,seconds);
+				Log.d("Andrew_result", workout.toString());
+				database.addNewWorkout(workout);
+				locationRecord.getListFiles();
+				finish();
+			}
+		};
+	}
+
 }

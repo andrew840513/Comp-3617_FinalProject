@@ -3,7 +3,7 @@ package com.comp3617.finalproject;
 import android.content.Context;
 import android.util.Log;
 
-import com.comp3617.finalproject.com.comp3617.finalproject.gpx.GPX;
+import com.comp3617.finalproject.gpx.GPX;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -24,7 +24,7 @@ class LocationRecord {
         this.context = context;
     }
 
-    void saveFile(String name, GPX gpx) {
+    String saveFile(String name, GPX gpx) {
         String fileName = new Date().getTime() + name;
         File file = new File(context.getFilesDir(), fileName + ".gpx");
         Serializer serializer = new Persister();
@@ -33,7 +33,7 @@ class LocationRecord {
         } catch (Exception e) {
             Log.e(context.getString(R.string.LocationErrorTag), e.getMessage());
         }
-
+        return fileName;
     }
 
     GPX readFile(String fileName) {
@@ -57,7 +57,7 @@ class LocationRecord {
         }
     }
 
-    void getListFiles() {
+    ArrayList<String> getListFiles() {
         ArrayList<String> inFiles = new ArrayList<String>();
         File[] files = context.getFilesDir().listFiles();
         for (File file : files) {
@@ -67,5 +67,13 @@ class LocationRecord {
         }
 
         Log.d("Andrew", "gpx:" + inFiles.toString());
+        return inFiles;
+    }
+
+    void deleteAllfiles(){
+        for (String fileName:getListFiles()) {
+            deleteFile(fileName.substring(0,fileName.length()-4));
+            Log.d("Andrew","delete gpx:"+ fileName);
+        }
     }
 }

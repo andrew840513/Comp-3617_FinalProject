@@ -2,10 +2,9 @@
     <string name="app_name">Final Project</string>
     <string name="title_activity_maps">Map</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="stats_stopworkout">STOP WORKOUT</string>
-    <string name="stats_startworkout">START WORKOUT</string>
+    <string name="stats_stopWorkout">STOP WORKOUT</string>
+    <string name="stats_startWorkout">START WORKOUT</string>
     <string name="stats_durationText">00:00</string>
     <string name="stats_distanceText">0.0</string>
     <string name="stats_distanceLbl">DISTANCE (KM)</string>
@@ -14,4 +13,6 @@
     <string name="checkGPS_desc">In order to track your bike activity</string>
     <string name="checkGPS_btn">Enable GPS</string>
     <string name="LocationErrorTag">LocationRecord_err</string>
+    <string name="title_activity_record">RecordActivity</string>
+    <string name="record_backBtn">Back</string>
 </resources>

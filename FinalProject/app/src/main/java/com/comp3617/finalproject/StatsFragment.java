@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
-import com.comp3617.finalproject.com.comp3617.finalproject.gpx.WPT;
 import com.roughike.bottombar.BottomBar;
 
 import java.util.Observable;
@@ -75,7 +73,7 @@ public class StatsFragment extends Fragment implements Observer, StartWorkoutLis
 		chronometer.setBase(SystemClock.elapsedRealtime());
 		chronometer.start();
 		mapListener.onStartWorkout();
-		startBtn.setText(R.string.stats_stopworkout);
+		startBtn.setText(R.string.stats_stopWorkout);
 		BottomBar bottomBar = (BottomBar) getActivity().findViewById(R.id.bottomBar);
 		bottomBar.setVisibility(View.GONE);
 		locationServices.start();
@@ -85,24 +83,15 @@ public class StatsFragment extends Fragment implements Observer, StartWorkoutLis
 	public void onStopWorkout() {
 		locationServices.stop();
 		mapListener.onStopWorkout();
-		for (WPT wpt:mapFragment.getGpx().getWpt()
-				) {
-			try{
-				Log.d("Andrew_gpx","lat:"+wpt.getLatitude()+"lon:"+wpt.getLongitude()+"ele:"+wpt.getElevation());
-			}catch (Exception e){
-				Log.e("Andrew_gpx_err",e.getMessage());
-			}
-
-		}
 		Intent intent = new Intent(getContext(), ResultActivity.class);
 		long elapsedSec = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
 		intent.putExtra("seconds", elapsedSec);
-		intent.putExtra("distance", distance.getText());
+		intent.putExtra("distanceText", distance.getText());
 		intent.putExtra("path", mapFragment.getPath());
 		startActivity(intent);
 
 		chronometer.stop();
-		startBtn.setText(R.string.stats_startworkout);
+		startBtn.setText(R.string.stats_startWorkout);
 		chronometer.setText(R.string.stats_durationText);
 		distance.setText(R.string.stats_distanceText);
 		BottomBar bottomBar = (BottomBar) getActivity().findViewById(R.id.bottomBar);
