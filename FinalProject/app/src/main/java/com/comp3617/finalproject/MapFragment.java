@@ -1,16 +1,16 @@
 package com.comp3617.finalproject;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,10 +42,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
     private double lastLongitude = 0;
     private double totalDistant = 0;
     private boolean dragging = false;
-    private boolean didShowMylocation;
+    private boolean didShowMyLocation;
 	private LocationServices locationServices;
-    private GPX gpx;
-    private List<WPT> wptList;
+	private List<WPT> wptList;
+	private Context ctx;
+	private Activity activity;
 	public MapFragment() {
 		// Required empty public constructor
 	}
@@ -54,11 +55,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		view = inflater.inflate(R.layout.fragment_map, container, false);
+		ctx = getActivity().getApplicationContext();
+		activity = getActivity();
 		return view;
 	}
 
 	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mapView = (MapView) view.findViewById(R.id.map);
 		if (mapView != null) {
@@ -82,17 +85,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
-		MapsInitializer.initialize(getContext());
+		MapsInitializer.initialize(ctx);
 		map = googleMap;
 		map.setOnCameraMoveStartedListener(this);
 		map.setOnMyLocationButtonClickListener(this);
 		String bestProvider = "";
 		googleMap.setMyLocationEnabled(true);
 
-		LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+		LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
 
 		if (isLocationEnabled()) {
-			locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+			locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 			Criteria mCriteria = new Criteria();
 			bestProvider = String.valueOf(locationManager.getBestProvider(mCriteria, true));
 
@@ -104,11 +107,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc1, 15));
 			}
 		} else {
-			if (ActivityCompat.checkSelfPermission(getContext(),
-					android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-					&& ActivityCompat.checkSelfPermission(getContext(),
-							android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-				return;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				if (activity.checkSelfPermission(
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && activity.checkSelfPermission(
+                                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
 			}
 			locationManager.requestLocationUpdates(bestProvider, 1000, 0, (LocationListener) this);
 		}
@@ -129,11 +134,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 	}
 
 	public boolean isLocationEnabled() {
-		if (ActivityCompat.checkSelfPermission(getContext(),
-				Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-				&& ActivityCompat.checkSelfPermission(getContext(),
-						Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			return false;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (activity.checkSelfPermission(
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && activity.checkSelfPermission(
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
 		}
 		return true;
 	}
@@ -155,10 +162,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 		return path;
 	}
 
-    public GPX getGpx() {
-        return gpx;
-    }
-
     @Override
 	public void onStartWorkout() {
         path = new PolylineOptions();
@@ -172,9 +175,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
         double elevation = locationServices.getElevation();
         WPT wpt = new WPT(currentLatitude,currentLongitude,elevation);
         wptList.add(wpt);
-		if (!didShowMylocation) {
+		if (!didShowMyLocation) {
 			moveToCurrentLocation(currentLatitude, currentLongitude);
-			didShowMylocation = true;
+			didShowMyLocation = true;
 		}
 
 		if (lastLatitude != 0 && lastLongitude != 0) {
@@ -196,7 +199,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 
     @Override
     public void onStopWorkout() {
-        gpx = new GPX(wptList);
+		GPX gpx = new GPX(wptList);
         GPX.setGpx(gpx);
         map.clear();
     }

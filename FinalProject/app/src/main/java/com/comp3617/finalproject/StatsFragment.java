@@ -3,7 +3,7 @@ package com.comp3617.finalproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +37,9 @@ public class StatsFragment extends Fragment implements Observer, StartWorkoutLis
 		startBtn = (Button) fragmentView.findViewById(R.id.startBtn);
 		chronometer = (Chronometer) fragmentView.findViewById(R.id.duration);
 		distance = (TextView) fragmentView.findViewById(R.id.distance);
-		mapFragment = (MapFragment) getParentFragment().getChildFragmentManager().findFragmentById(R.id.main_map_fragment);
+		mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.main_map_fragment);
 
-		locationServices = new LocationServices(mapFragment, getContext(), this);
+		locationServices = new LocationServices(mapFragment, getActivity().getApplicationContext(), this);
 		mapFragment.setLocationServices(locationServices);
 
 		mapListener = mapFragment;
@@ -83,7 +83,7 @@ public class StatsFragment extends Fragment implements Observer, StartWorkoutLis
 	public void onStopWorkout() {
 		locationServices.stop();
 		mapListener.onStopWorkout();
-		Intent intent = new Intent(getContext(), ResultActivity.class);
+		Intent intent = new Intent(getActivity().getApplicationContext(), ResultActivity.class);
 		long elapsedSec = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
 		intent.putExtra("seconds", elapsedSec);
 		intent.putExtra("distanceText", distance.getText());

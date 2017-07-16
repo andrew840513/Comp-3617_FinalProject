@@ -1,11 +1,13 @@
 package com.comp3617.finalproject;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,33 +20,31 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ResultMapFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ResultMapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ResultMapFragment extends Fragment implements OnMapReadyCallback {
 	View view;
 	MapView mapView;
 	GoogleMap map;
 	Polyline myPath;
+	PolylineOptions path;
+	private Context ctx;
+	Activity activity;
+
 	public ResultMapFragment() {
 	}
 
-	@Nullable
 	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-			@Nullable Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_result_map, container, false);
+		ctx = getActivity().getApplicationContext();
+		activity = getActivity();
 		return view;
 	}
 
 	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
 		mapView = (MapView) view.findViewById(R.id.map_result);
@@ -57,26 +57,31 @@ public class ResultMapFragment extends Fragment implements OnMapReadyCallback {
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
-		MapsInitializer.initialize(getContext());
+		MapsInitializer.initialize(ctx);
 		map = googleMap;
-		if (ActivityCompat.checkSelfPermission(getContext(),
-				Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-				&& ActivityCompat.checkSelfPermission(getContext(),
-						Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+		addPath();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (activity.checkSelfPermission(
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && activity.checkSelfPermission(
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-			return;
+                return;
+            }
 		}
 		map.setMyLocationEnabled(false);
-		//addPath();
-		//moveInBounds();
+		moveInBounds();
 	}
 
 	void addPath(){
-		ResultActivity activity = (ResultActivity)getActivity();
 		int COLOR_BLACK_ARGB = 0xff0000ff;
-		myPath = map.addPolyline(activity.getPath());
+		myPath = map.addPolyline(path);
 		myPath.setColor(COLOR_BLACK_ARGB);
 		myPath.setWidth(20);
+	}
+
+	public void setPath(PolylineOptions path) {
+		this.path = path;
 	}
 
 	void moveInBounds(){
@@ -85,12 +90,15 @@ public class ResultMapFragment extends Fragment implements OnMapReadyCallback {
 			builder.include(myPath.getPoints().get(i));
 		}
 
-
-		LatLngBounds bounds = builder.build();
-		int padding = 50; // offset from edges of the map in pixels
-
-		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-		map.animateCamera(cu);
+		try{
+			LatLngBounds bounds = builder.build();
+			int width = getResources().getDisplayMetrics().widthPixels;
+			int height = getResources().getDisplayMetrics().heightPixels;
+			int padding = (int) (width * 0.25);
+			CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width,height,padding);
+			map.moveCamera(cu);
+		}catch (Exception e){
+			Log.e("ResultMapFragment_err",e.getMessage());
+		}
 	}
-
 }

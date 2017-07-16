@@ -16,7 +16,7 @@ import java.util.Observer;
 import static android.content.Context.LOCATION_SERVICE;
 
 /**
- * Created by Andrew on 2017-07-07.
+ * Created by Andrew on 2017-07-07
  */
 class LocationServices extends Observable implements LocationListener {
 

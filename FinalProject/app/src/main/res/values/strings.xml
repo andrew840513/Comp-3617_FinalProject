@@ -15,4 +15,5 @@
     <string name="LocationErrorTag">LocationRecord_err</string>
     <string name="title_activity_record">RecordActivity</string>
     <string name="record_backBtn">Back</string>
+    <string name="LocationDebugTag">LocationRecord</string>
 </resources>

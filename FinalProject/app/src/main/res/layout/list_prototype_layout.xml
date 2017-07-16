@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.daimajia.swipe.SwipeLayout
-    android:id="@+id/list_swipeLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_swipeLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="50dp">
     <!-- Bottom View Start-->
     <LinearLayout
         android:id="@+id/bottom_wrapper"
@@ -36,50 +35,49 @@
 
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/bikeIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/ic_track_workout" />
+            android:layout_marginStart="20dp"
+            app:srcCompat="@drawable/ic_track_workout"
+            android:layout_alignTop="@+id/list_name"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:id="@+id/list_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/imageView"
+            android:layout_marginStart="19dp"
             android:textSize="18sp"
-            tools:text="Name" />
+            tools:text="Name"
+            android:layout_alignBottom="@+id/list_date"
+            android:layout_toEndOf="@+id/bikeIcon" />
 
         <TextView
             android:id="@+id/list_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView"
-            android:layout_alignStart="@+id/list_name"
-            tools:text="00:00:00" />
+            tools:text="00:00:00"
+            android:layout_below="@+id/list_name"
+            android:layout_alignStart="@+id/list_name" />
 
         <TextView
             android:id="@+id/list_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/list_duration"
-            android:layout_centerHorizontal="true"
-            tools:text="0.0km" />
+            tools:text="0.0km"
+            android:layout_alignBaseline="@+id/list_duration"
+            android:layout_alignBottom="@+id/list_duration"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/list_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/imageView"
             android:layout_marginRight="7dp"
-            tools:text="2017-01-01 0:00 AM" />
+            tools:text="2017-01-01 0:00 AM"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
     <!-- Surface View End -->
 </com.daimajia.swipe.SwipeLayout>

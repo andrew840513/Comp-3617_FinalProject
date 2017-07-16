@@ -7,17 +7,12 @@ import com.comp3617.finalproject.gpx.GPX;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-import org.xmlpull.v1.XmlSerializer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 class LocationRecord {
-    static Map<String, String> attributes = new HashMap<>();
-    static XmlSerializer root;
     private Context context;
 
     LocationRecord(Context context) {
@@ -51,14 +46,14 @@ class LocationRecord {
         File file = new File(context.getFilesDir(), fileName + ".gpx");
 
         if (file.delete()) {
-            Log.d("LocationRecord", "success delete file" + fileName);
+            Log.d(context.getString(R.string.LocationDebugTag), "success delete file" + fileName);
         } else {
             Log.e(context.getString(R.string.LocationErrorTag), "error delete file" + fileName);
         }
     }
 
     ArrayList<String> getListFiles() {
-        ArrayList<String> inFiles = new ArrayList<String>();
+        ArrayList<String> inFiles = new ArrayList<>();
         File[] files = context.getFilesDir().listFiles();
         for (File file : files) {
             if (file.getName().endsWith(".gpx")) {
@@ -66,11 +61,12 @@ class LocationRecord {
             }
         }
 
-        Log.d("Andrew", "gpx:" + inFiles.toString());
+        Log.d(context.getString(R.string.LocationDebugTag), "gpx:" + inFiles.toString());
         return inFiles;
     }
 
-    void deleteAllfiles(){
+    @SuppressWarnings("unused")
+    void deleteAllFiles(){
         for (String fileName:getListFiles()) {
             deleteFile(fileName.substring(0,fileName.length()-4));
             Log.d("Andrew","delete gpx:"+ fileName);

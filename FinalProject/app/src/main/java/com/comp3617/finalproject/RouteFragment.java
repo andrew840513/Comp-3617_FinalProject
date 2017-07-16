@@ -1,7 +1,7 @@
 package com.comp3617.finalproject;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,7 @@ import io.realm.Realm;
 public class RouteFragment extends Fragment {
 	ListView workoutListView;
 	Realm realm = Realm.getDefaultInstance();
-	WorkoutList1Adapter adapter;
+	WorkoutListAdapter adapter;
 	Database database = new Database(realm);
 	public RouteFragment() {
 		// Required empty public constructor
@@ -26,7 +26,7 @@ public class RouteFragment extends Fragment {
 		View fragmentView = inflater.inflate(R.layout.fragment_route, container, false);
 
 		workoutListView = (ListView) fragmentView.findViewById(R.id.route_list_view);
-		adapter = new WorkoutList1Adapter(getContext(),database.getAllWorkout());
+		adapter = new WorkoutListAdapter(getActivity().getApplicationContext(),database.getAllWorkout());
 		workoutListView.setAdapter(adapter);
 		return fragmentView;
 	}

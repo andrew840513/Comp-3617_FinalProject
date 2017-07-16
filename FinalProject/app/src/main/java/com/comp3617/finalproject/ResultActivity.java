@@ -1,8 +1,8 @@
 package com.comp3617.finalproject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +19,7 @@ import java.util.Locale;
 
 import io.realm.Realm;
 
-public class ResultActivity extends AppCompatActivity {
+public class ResultActivity extends Activity {
 	private long seconds;
 	private double kms;
 	EditText workoutName;
@@ -37,7 +37,8 @@ public class ResultActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_result);
 		Intent intent = getIntent();
 		path = intent.getExtras().getParcelable("path");
-
+		ResultMapFragment fragment = (ResultMapFragment) getFragmentManager().findFragmentById(R.id.result_map);
+		fragment.setPath(path);
 		workoutName = (EditText) findViewById(R.id.result_workoutName);
 		durationText = (TextView) findViewById(R.id.result_duration);
 		distanceText = (TextView) findViewById(R.id.result_distance);
@@ -63,10 +64,6 @@ public class ResultActivity extends AppCompatActivity {
 		return String.format(Locale.getDefault(),"%02d:%02d:%02d", hours, minutes, seconds);
 	}
 
-	public PolylineOptions getPath() {
-		return path;
-	}
-
 	public View.OnClickListener onDiscardClick() {
 		return new View.OnClickListener() {
 			@Override
@@ -83,8 +80,7 @@ public class ResultActivity extends AppCompatActivity {
 				LocationRecord locationRecord = new LocationRecord(getApplicationContext());
 				Workout workout = new Workout();
 				String name = workoutName.getText().toString();
-				//T/ODO remove deleteAllfile
-				//locationRecord.deleteAllfiles();
+				//locationRecord.deleteAllFiles();
 				String fileName = locationRecord.saveFile(name, GPX.getGpx());
 
 				workout.setWorkout(fileName,name,new Date(),kms,seconds);
