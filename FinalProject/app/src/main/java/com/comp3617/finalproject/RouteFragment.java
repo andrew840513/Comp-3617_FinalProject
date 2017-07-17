@@ -12,10 +12,8 @@ import com.comp3617.finalproject.database.Database;
 import io.realm.Realm;
 
 public class RouteFragment extends Fragment {
-	ListView workoutListView;
-	Realm realm = Realm.getDefaultInstance();
-	WorkoutListAdapter adapter;
-	Database database = new Database(realm);
+	private Realm realm = Realm.getDefaultInstance();
+	private Database database = new Database(realm);
 	public RouteFragment() {
 		// Required empty public constructor
 	}
@@ -25,8 +23,8 @@ public class RouteFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View fragmentView = inflater.inflate(R.layout.fragment_route, container, false);
 
-		workoutListView = (ListView) fragmentView.findViewById(R.id.route_list_view);
-		adapter = new WorkoutListAdapter(getActivity().getApplicationContext(),database.getAllWorkout());
+		ListView workoutListView = (ListView) fragmentView.findViewById(R.id.route_list_view);
+		WorkoutListAdapter adapter = new WorkoutListAdapter(getActivity().getApplicationContext(), database.getAllWorkout());
 		workoutListView.setAdapter(adapter);
 		return fragmentView;
 	}

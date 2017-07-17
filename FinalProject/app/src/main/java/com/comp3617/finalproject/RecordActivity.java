@@ -16,10 +16,8 @@ import java.util.Locale;
 import io.realm.Realm;
 
 public class RecordActivity extends Activity {
-    LinearLayout nameLayout;
-    LinearLayout saveBtnLayout;
-    Realm realm = Realm.getDefaultInstance();
-    Database database = new Database(realm);
+    private Realm realm = Realm.getDefaultInstance();
+    private Database database = new Database(realm);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +29,8 @@ public class RecordActivity extends Activity {
         ResultMapFragment fragment = (ResultMapFragment) getFragmentManager().findFragmentById(R.id.result_map);
         fragment.setPath(path);
 
-        nameLayout = (LinearLayout) findViewById(R.id.reslut_nameLayout);
-        saveBtnLayout = (LinearLayout) findViewById(R.id.result_saveBtnLayout);
+        LinearLayout nameLayout = (LinearLayout) findViewById(R.id.reslut_nameLayout);
+        LinearLayout saveBtnLayout = (LinearLayout) findViewById(R.id.result_saveBtnLayout);
 
         nameLayout.setVisibility(View.GONE);
         saveBtnLayout.setVisibility(View.GONE);

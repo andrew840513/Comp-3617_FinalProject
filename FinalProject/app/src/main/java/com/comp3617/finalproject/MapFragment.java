@@ -33,11 +33,8 @@ import java.util.List;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, StartWorkoutListener,
 		GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnMyLocationButtonClickListener {
-	GoogleMap map;
-	MapView mapView;
-	View view;
-	PolylineOptions path = new PolylineOptions();
-	Polyline myPath;
+	private GoogleMap map;
+	private PolylineOptions path = new PolylineOptions();
 	private double lastLatitude = 0;
     private double lastLongitude = 0;
     private double totalDistant = 0;
@@ -47,6 +44,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 	private List<WPT> wptList;
 	private Context ctx;
 	private Activity activity;
+	private MapView mapView;
+	private boolean created = false;
+
 	public MapFragment() {
 		// Required empty public constructor
 	}
@@ -54,10 +54,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		view = inflater.inflate(R.layout.fragment_map, container, false);
 		ctx = getActivity().getApplicationContext();
 		activity = getActivity();
-		return view;
+		return inflater.inflate(R.layout.fragment_map, container, false);
 	}
 
 	@Override
@@ -65,7 +64,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 		super.onViewCreated(view, savedInstanceState);
 		mapView = (MapView) view.findViewById(R.id.map);
 		if (mapView != null) {
-			mapView.onCreate(null);
+			if(!created){
+				mapView.onCreate(null);
+				created = true;
+			}
 			mapView.onResume();
 			mapView.getMapAsync(this);
 		}
@@ -153,7 +155,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 	public void drawLine(double currentLatitude, double currentLongitude) {
 		int COLOR_BLACK_ARGB = 0xffff0000;
 		path.add(new LatLng(currentLatitude, currentLongitude));
-		myPath = map.addPolyline(path);
+		Polyline myPath = map.addPolyline(path);
 		myPath.setColor(COLOR_BLACK_ARGB);
 		myPath.setWidth(20);
 	}
@@ -204,7 +206,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
         map.clear();
     }
 
-    public void setLocationServices(LocationServices locationServices) {
+	void setLocationServices(LocationServices locationServices) {
 		this.locationServices = locationServices;
 	}
 }

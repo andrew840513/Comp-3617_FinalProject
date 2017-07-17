@@ -26,32 +26,13 @@ public class CheckGPSActivity extends Activity {
 		setContentView(R.layout.activity_check_gps);
 		enableBtn = (Button) findViewById(R.id.checkGPS_Btn);
 		activity = this;
-		if (!checkPermission()) {
-			enableBtn.setOnClickListener(onClickEnable_permission());
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				this.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION,
-						Manifest.permission.ACCESS_COARSE_LOCATION }, 101);
-			}
-		} else if (!isLocationServiceEnabled()) {
-			enableBtn.setOnClickListener(onClickEnable_setting());
-			Log.d("Andrew", "GPS is not turn on");
-		}
+		checkPermission();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (!checkPermission()) {
-			enableBtn.setOnClickListener(onClickEnable_permission());
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				this.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION }, 101);
-			}
-		} else if (!isLocationServiceEnabled()) {
-			enableBtn.setOnClickListener(onClickEnable_setting());
-			Log.d("Andrew", "GPS is not turn on");
-		}
-
+		checkPermission();
 	}
 
 	@Override
@@ -70,7 +51,7 @@ public class CheckGPSActivity extends Activity {
 		}
 	}
 
-	private boolean checkPermission() {
+	private void checkPermission() {
 		int fineLocation = 0;
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
 			fineLocation = this.checkSelfPermission(
@@ -81,7 +62,15 @@ public class CheckGPSActivity extends Activity {
 			coarseLocation = this.checkSelfPermission(
                     Manifest.permission.ACCESS_COARSE_LOCATION);
 		}
-		return (fineLocation == 0 && coarseLocation == 0);
+		if (!(fineLocation == 0 && coarseLocation == 0)) {
+			enableBtn.setOnClickListener(onClickEnable_permission());
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				this.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION,
+						Manifest.permission.ACCESS_COARSE_LOCATION }, 101);
+			}
+		} else if (!isLocationServiceEnabled()) {
+			enableBtn.setOnClickListener(onClickEnable_setting());
+		}
 	}
 
 	private boolean isLocationServiceEnabled() {
@@ -90,7 +79,7 @@ public class CheckGPSActivity extends Activity {
 		return (!provider.trim().isEmpty() && !LocationManager.PASSIVE_PROVIDER.equals(provider));
 	}
 
-	public View.OnClickListener onClickEnable_permission() {
+	private View.OnClickListener onClickEnable_permission() {
 		return new View.OnClickListener() {
 			@TargetApi(Build.VERSION_CODES.M)
 			@Override
@@ -101,7 +90,7 @@ public class CheckGPSActivity extends Activity {
 		};
 	}
 
-	public View.OnClickListener onClickEnable_setting() {
+	private View.OnClickListener onClickEnable_setting() {
 		return new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {

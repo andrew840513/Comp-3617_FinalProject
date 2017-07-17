@@ -22,29 +22,24 @@ import io.realm.Realm;
 public class ResultActivity extends Activity {
 	private long seconds;
 	private double kms;
-	EditText workoutName;
-	TextView discardBtn;
-	TextView durationText;
-	TextView distanceText;
-	TextView averageSpeedText;
-	Button saveBtn;
-	PolylineOptions path;
-	Realm realm = Realm.getDefaultInstance();
-	Database database = new Database(realm);
+	private EditText workoutName;
+	private Realm realm = Realm.getDefaultInstance();
+	private Database database = new Database(realm);
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result);
 		Intent intent = getIntent();
-		path = intent.getExtras().getParcelable("path");
+		PolylineOptions path = intent.getExtras().getParcelable("path");
 		ResultMapFragment fragment = (ResultMapFragment) getFragmentManager().findFragmentById(R.id.result_map);
 		fragment.setPath(path);
 		workoutName = (EditText) findViewById(R.id.result_workoutName);
-		durationText = (TextView) findViewById(R.id.result_duration);
-		distanceText = (TextView) findViewById(R.id.result_distance);
-		discardBtn = (TextView) findViewById(R.id.result_discard);
-		averageSpeedText = (TextView) findViewById(R.id.result_averageSpeed);
-		saveBtn = (Button) findViewById(R.id.result_saveBtn);
+		TextView durationText = (TextView) findViewById(R.id.result_duration);
+		TextView distanceText = (TextView) findViewById(R.id.result_distance);
+		TextView discardBtn = (TextView) findViewById(R.id.result_discard);
+		TextView averageSpeedText = (TextView) findViewById(R.id.result_averageSpeed);
+		Button saveBtn = (Button) findViewById(R.id.result_saveBtn);
 
 		seconds = intent.getLongExtra("seconds",0);
 		kms = Double.parseDouble(intent.getStringExtra("distanceText"));

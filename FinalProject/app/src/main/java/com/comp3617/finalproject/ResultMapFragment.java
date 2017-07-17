@@ -23,11 +23,9 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class ResultMapFragment extends Fragment implements OnMapReadyCallback {
-	View view;
-	MapView mapView;
-	GoogleMap map;
-	Polyline myPath;
-	PolylineOptions path;
+	private GoogleMap map;
+	private Polyline myPath;
+	private PolylineOptions path;
 	private Context ctx;
 	Activity activity;
 
@@ -37,17 +35,16 @@ public class ResultMapFragment extends Fragment implements OnMapReadyCallback {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fragment_result_map, container, false);
 		ctx = getActivity().getApplicationContext();
 		activity = getActivity();
-		return view;
+		return inflater.inflate(R.layout.fragment_result_map, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		mapView = (MapView) view.findViewById(R.id.map_result);
+		MapView mapView = (MapView) view.findViewById(R.id.map_result);
 		if (mapView != null) {
 			mapView.onCreate(null);
 			mapView.onResume();
@@ -94,7 +91,7 @@ public class ResultMapFragment extends Fragment implements OnMapReadyCallback {
 			LatLngBounds bounds = builder.build();
 			int width = getResources().getDisplayMetrics().widthPixels;
 			int height = getResources().getDisplayMetrics().heightPixels;
-			int padding = (int) (width * 0.25);
+			int padding = (int) (width * 0.3);
 			CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width,height,padding);
 			map.moveCamera(cu);
 		}catch (Exception e){

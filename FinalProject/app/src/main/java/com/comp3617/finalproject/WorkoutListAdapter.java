@@ -21,6 +21,7 @@ import com.daimajia.swipe.adapters.ArraySwipeAdapter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,7 +34,7 @@ import io.realm.Realm;
 class WorkoutListAdapter extends ArraySwipeAdapter<Workout> {
     private Context ctx;
     private List<Workout> workoutList;
-
+    private SimpleDateFormat fromatDate = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa",Locale.getDefault());
     WorkoutListAdapter(Context context, List<Workout> workouts){
         super(context,0,workouts);
         this.ctx = context;
@@ -72,7 +73,7 @@ class WorkoutListAdapter extends ArraySwipeAdapter<Workout> {
 
         durationText.setText(convertTime(workout.getDuration()));
         distanceText.setText(String.format(Locale.getDefault(),"%.2fkm",workout.getDistance()));
-        dateText.setText(workout.getDate().toString());
+        dateText.setText(fromatDate.format(workout.getDate()));
         return rowView;
     }
 

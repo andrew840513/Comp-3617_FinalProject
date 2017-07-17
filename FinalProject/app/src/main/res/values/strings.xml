@@ -16,4 +16,13 @@
     <string name="title_activity_record">RecordActivity</string>
     <string name="record_backBtn">Back</string>
     <string name="LocationDebugTag">LocationRecord</string>
+    <string name="checkGPS_imgDesc">GPS icon</string>
+    <string name="result_discard">Discard</string>
+    <string name="result_result">Result</string>
+    <string name="result_name">Name</string>
+    <string name="result_duration">Duration</string>
+    <string name="result_averageSpeed">Average Speed</string>
+    <string name="result_distance">Distance</string>
+    <string name="list_delete">Delete</string>
+    <string name="list_imageDesc">bike icon</string>
 </resources>

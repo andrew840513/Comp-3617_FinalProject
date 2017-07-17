@@ -23,8 +23,6 @@ public class FinalProject extends Application {
                         realm.createObject(Workout.class);
                     }})
                 .build();
-        //TODO remove deleteReam
-        //Realm.deleteRealm(realmConfig);
         Realm.setDefaultConfiguration(realmConfig);
     }
 }
