@@ -35,30 +35,29 @@ public class CheckGPSActivity extends Activity {
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+			@NonNull int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		switch (requestCode) {
-			case 101: {
-				// If request is cancelled, the result arrays are empty.
-				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-					Intent intent = new Intent(this, MainActivity.class);
-					startActivity(intent);
-					finish();
-				}
+		case 101: {
+			// If request is cancelled, the result arrays are empty.
+			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				Intent intent = new Intent(this, MainActivity.class);
+				startActivity(intent);
+				finish();
 			}
+		}
 		}
 	}
 
 	private void checkPermission() {
 		int fineLocation = 0;
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-			fineLocation = this.checkSelfPermission(
-                    Manifest.permission.ACCESS_FINE_LOCATION);
+			fineLocation = this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
 		}
 		int coarseLocation = 0;
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-			coarseLocation = this.checkSelfPermission(
-                    Manifest.permission.ACCESS_COARSE_LOCATION);
+			coarseLocation = this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
 		}
 		if (!(fineLocation == 0 && coarseLocation == 0)) {
 			enableBtn.setOnClickListener(onClickEnable_permission());
@@ -68,6 +67,10 @@ public class CheckGPSActivity extends Activity {
 			}
 		} else if (!isLocationServiceEnabled()) {
 			enableBtn.setOnClickListener(onClickEnable_setting());
+		} else {
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+			finish();
 		}
 	}
 

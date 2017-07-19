@@ -2,13 +2,13 @@ package com.comp3617.finalproject;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +18,7 @@ public class MainFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (checkPermission() && isLocationServiceEnabled()) {
 			return inflater.inflate(R.layout.fragment_main, container, false);
 		} else {
@@ -44,10 +43,8 @@ public class MainFragment extends Fragment {
 	private boolean checkPermission() {
 		int MyVersion = Build.VERSION.SDK_INT;
 		if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
-			int fineLocation = getContext().checkSelfPermission(
-					Manifest.permission.ACCESS_FINE_LOCATION);
-			int coarseLocation = getContext().checkSelfPermission(
-					Manifest.permission.ACCESS_COARSE_LOCATION);
+			int fineLocation = getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+			int coarseLocation = getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
 			return (fineLocation == 0 && coarseLocation == 0);
 		}
 		return true;

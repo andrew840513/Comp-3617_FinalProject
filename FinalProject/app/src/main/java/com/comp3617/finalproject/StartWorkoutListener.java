@@ -6,6 +6,8 @@ package com.comp3617.finalproject;
 
 interface StartWorkoutListener {
 	void onStartWorkout();
+
 	void onStopWorkout();
+
 	void startWorkout();
 }

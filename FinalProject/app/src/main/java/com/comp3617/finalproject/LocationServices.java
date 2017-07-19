@@ -1,5 +1,11 @@
 package com.comp3617.finalproject;
 
+import static android.content.Context.LOCATION_SERVICE;
+
+import java.util.Locale;
+import java.util.Observable;
+import java.util.Observer;
+
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
@@ -8,12 +14,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-
-import java.util.Locale;
-import java.util.Observable;
-import java.util.Observer;
-
-import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * Created by Andrew on 2017-07-07

@@ -1,12 +1,12 @@
 package com.comp3617.finalproject.gpx;
 
+import java.util.List;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.NamespaceList;
 import org.simpleframework.xml.Root;
-
-import java.util.List;
 
 /**
  * Created by Andrew on 2017-07-12.
@@ -15,12 +15,10 @@ import java.util.List;
 @NamespaceList({ @Namespace(reference = "http://www.topografix.com/GPX/1/1"),
 		@Namespace(reference = "http://www.w3.org/2001/XMLSchema-instance", prefix = "xsi") })
 
-public class GPX{
-	private static GPX gpx;
-
+public class GPX {
 	@Attribute(name = "schemaLocation")
 	private static final String schemaLocation = "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd";
-
+	private static GPX gpx;
 	@ElementList(name = "wpt", inline = true)
 	private List<WPT> wpt;
 
@@ -33,6 +31,14 @@ public class GPX{
 		this.wpt = wpts;
 	}
 
+	public static GPX getGpx() {
+		return gpx;
+	}
+
+	public static void setGpx(GPX gpx) {
+		GPX.gpx = gpx;
+	}
+
 	public String getSchemaLocation() {
 		return schemaLocation;
 	}
@@ -43,13 +49,5 @@ public class GPX{
 
 	public void setWpt(List<WPT> wpt) {
 		this.wpt = wpt;
-	}
-
-	public static GPX getGpx() {
-		return gpx;
-	}
-
-	public static void setGpx(GPX gpx) {
-		GPX.gpx = gpx;
 	}
 }

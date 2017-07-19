@@ -1,20 +1,20 @@
 package com.comp3617.finalproject;
 
+import java.util.Observable;
+import java.util.Observer;
+
+import com.roughike.bottombar.BottomBar;
+
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
-
-import com.roughike.bottombar.BottomBar;
-
-import java.util.Observable;
-import java.util.Observer;
 
 public class StatsFragment extends Fragment implements Observer, StartWorkoutListener {
 	private Chronometer chronometer;
@@ -25,6 +25,7 @@ public class StatsFragment extends Fragment implements Observer, StartWorkoutLis
 	private LocationServices locationServices;
 	private StartWorkoutListener mapListener;
 	private StartWorkoutListener statsListener;
+
 	public StatsFragment() {
 		// Required empty public constructor
 	}
@@ -99,7 +100,8 @@ public class StatsFragment extends Fragment implements Observer, StartWorkoutLis
 	}
 
 	@Override
-	public void startWorkout() {}
+	public void startWorkout() {
+	}
 
 	@Override
 	public void update(Observable observable, Object o) {

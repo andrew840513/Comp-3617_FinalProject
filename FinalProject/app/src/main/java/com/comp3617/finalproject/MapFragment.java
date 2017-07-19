@@ -1,5 +1,19 @@
 package com.comp3617.finalproject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.comp3617.finalproject.gpx.GPX;
+import com.comp3617.finalproject.gpx.WPT;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
@@ -17,29 +31,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.comp3617.finalproject.gpx.GPX;
-import com.comp3617.finalproject.gpx.WPT;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class MapFragment extends Fragment implements OnMapReadyCallback, StartWorkoutListener,
 		GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnMyLocationButtonClickListener {
 	private GoogleMap map;
 	private PolylineOptions path = new PolylineOptions();
 	private double lastLatitude = 0;
-    private double lastLongitude = 0;
-    private double totalDistant = 0;
-    private boolean dragging = false;
-    private boolean didShowMyLocation;
+	private double lastLongitude = 0;
+	private double totalDistant = 0;
+	private boolean dragging = false;
+	private boolean didShowMyLocation;
 	private LocationServices locationServices;
 	private List<WPT> wptList;
 	private Context ctx;
@@ -64,7 +64,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 		super.onViewCreated(view, savedInstanceState);
 		mapView = (MapView) view.findViewById(R.id.map);
 		if (mapView != null) {
-			if(!created){
+			if (!created) {
 				mapView.onCreate(null);
 				created = true;
 			}
@@ -111,11 +111,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 		} else {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 				if (activity.checkSelfPermission(
-                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && activity.checkSelfPermission(
-                                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
+						Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+						&& activity.checkSelfPermission(
+								Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+					return;
+				}
 			}
 			locationManager.requestLocationUpdates(bestProvider, 1000, 0, (LocationListener) this);
 		}
@@ -136,12 +136,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 
 	public boolean isLocationEnabled() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			if (activity.checkSelfPermission(
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && activity.checkSelfPermission(
-                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
+			if (activity
+					.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+					&& activity.checkSelfPermission(
+							Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -163,19 +163,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 		return path;
 	}
 
-    @Override
+	@Override
 	public void onStartWorkout() {
-        path = new PolylineOptions();
-        wptList = new ArrayList<>();
+		path = new PolylineOptions();
+		wptList = new ArrayList<>();
 	}
 
 	@Override
 	public void startWorkout() {
 		double currentLatitude = locationServices.getLatitude();
 		double currentLongitude = locationServices.getLongitude();
-        double elevation = locationServices.getElevation();
-        WPT wpt = new WPT(currentLatitude,currentLongitude,elevation);
-        wptList.add(wpt);
+		double elevation = locationServices.getElevation();
+		WPT wpt = new WPT(currentLatitude, currentLongitude, elevation);
+		wptList.add(wpt);
 		if (!didShowMyLocation) {
 			moveToCurrentLocation(currentLatitude, currentLongitude);
 			didShowMyLocation = true;
@@ -198,12 +198,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 		}
 	}
 
-    @Override
-    public void onStopWorkout() {
+	@Override
+	public void onStopWorkout() {
 		GPX gpx = new GPX(wptList);
-        GPX.setGpx(gpx);
-        map.clear();
-    }
+		GPX.setGpx(gpx);
+		map.clear();
+	}
 
 	void setLocationServices(LocationServices locationServices) {
 		this.locationServices = locationServices;

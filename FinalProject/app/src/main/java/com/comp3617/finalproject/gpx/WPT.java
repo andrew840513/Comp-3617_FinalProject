@@ -1,15 +1,15 @@
 package com.comp3617.finalproject.gpx;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
 /**
  * Created by Andrew on 2017-07-12
@@ -29,7 +29,7 @@ public class WPT {
 	@Element(name = "time")
 	private String time;
 
-	//Simple XML Constructor
+	// Simple XML Constructor
 	public WPT(@Attribute(name = "lat") double latitude, @Attribute(name = "lon") double longitude,
 			@Element(name = "ele") double elevation, @Element(name = "time") String time) {
 		this.latitude = latitude;
@@ -58,7 +58,7 @@ public class WPT {
 	}
 
 	public Date getTime() throws ParseException {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.getDefault());
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
 		return df.parse(time);
 	}
 
