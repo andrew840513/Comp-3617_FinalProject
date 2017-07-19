@@ -95,7 +95,7 @@ public class ResultMapFragment extends Fragment implements OnMapReadyCallback {
 			CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width,height,padding);
 			map.moveCamera(cu);
 		}catch (Exception e){
-			Log.e("ResultMapFragment_err",e.getMessage());
+			Log.e(getString(R.string.ResultMapFragment_err_tag),e.getMessage());
 		}
 	}
 }

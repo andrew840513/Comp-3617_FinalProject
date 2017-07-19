@@ -79,7 +79,6 @@ public class ResultActivity extends Activity {
 				String fileName = locationRecord.saveFile(name, GPX.getGpx());
 
 				workout.setWorkout(fileName,name,new Date(),kms,seconds);
-				Log.d("Andrew_result", workout.toString());
 				database.addNewWorkout(workout);
 				locationRecord.getListFiles();
 				finish();

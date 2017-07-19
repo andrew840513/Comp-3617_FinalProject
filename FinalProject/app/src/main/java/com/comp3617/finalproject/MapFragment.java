@@ -80,7 +80,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 			rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 			rlp.setMargins(0, 180, 180, 0);
 		} catch (Exception e) {
-			Log.d("Andrew", "Not able to find the map view");
+			Log.d(getString(R.string.MapFrament_error_tag), "Not able to find the map view");
 		}
 
 	}
@@ -124,7 +124,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, StartWo
 	@Override
 	public void onCameraMoveStarted(int reason) {
 		if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
-			Log.d("Andrew", "I moved camera");
 			dragging = true;
 		}
 	}

@@ -25,4 +25,8 @@
     <string name="result_distance">Distance</string>
     <string name="list_delete">Delete</string>
     <string name="list_imageDesc">bike icon</string>
+    <string name="MapFrament_error_tag">MapFragment_err</string>
+    <string name="ResultMapFragment_err_tag">ResultMapFragment_err</string>
+    <string name="List_err_tag">List_err</string>
+    <string name="List">List</string>
 </resources>

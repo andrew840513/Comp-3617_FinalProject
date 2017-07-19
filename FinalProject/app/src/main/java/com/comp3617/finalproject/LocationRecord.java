@@ -60,8 +60,6 @@ class LocationRecord {
                 inFiles.add(file.getName());
             }
         }
-
-        Log.d(context.getString(R.string.LocationDebugTag), "gpx:" + inFiles.toString());
         return inFiles;
     }
 
@@ -69,7 +67,6 @@ class LocationRecord {
     void deleteAllFiles(){
         for (String fileName:getListFiles()) {
             deleteFile(fileName.substring(0,fileName.length()-4));
-            Log.d("Andrew","delete gpx:"+ fileName);
         }
     }
 }

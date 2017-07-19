@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Created by Andrew on 2017-07-12.
+ * Created by Andrew on 2017-07-12
  */
 
 @Root(name = "wpt")
@@ -29,6 +29,7 @@ public class WPT {
 	@Element(name = "time")
 	private String time;
 
+	//Simple XML Constructor
 	public WPT(@Attribute(name = "lat") double latitude, @Attribute(name = "lon") double longitude,
 			@Element(name = "ele") double elevation, @Element(name = "time") String time) {
 		this.latitude = latitude;

@@ -82,11 +82,11 @@ class WorkoutListAdapter extends ArraySwipeAdapter<Workout> {
         List<WPT> wptList= gpx.getWpt();
         try{
            for (WPT wpt: wptList) {
-               Log.d("Andrew-List","Lat"+wpt.getLatitude()+"Lon"+wpt.getLongitude());
+               Log.d(ctx.getString(R.string.List),"Lat"+wpt.getLatitude()+"Lon"+wpt.getLongitude());
                path.add(new LatLng(wpt.getLatitude(), wpt.getLongitude()));
            }
         }catch (Exception e){
-            Log.d("Andrew_list",e.getMessage());
+            Log.d(ctx.getString(R.string.List_err_tag),e.getMessage());
         }
 
         return path;
@@ -167,7 +167,7 @@ class WorkoutListAdapter extends ArraySwipeAdapter<Workout> {
                     intent.putExtra("path",path);
                     ctx.startActivity(intent);
                 }catch (Exception e){
-                    Log.d("Andrew_List",e.getMessage());
+                    Log.d(ctx.getString(R.string.List_err_tag),e.getMessage());
                 }
             }
         };

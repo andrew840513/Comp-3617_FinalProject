@@ -1,7 +1,5 @@
 package com.comp3617.finalproject.database;
 
-import android.util.Log;
-
 import com.comp3617.finalproject.model.Workout;
 
 import java.util.ArrayList;
@@ -45,7 +43,6 @@ public class Database {
                 newWorkout.setDate(workout.getDate());
                 newWorkout.setDistance(workout.getDistance());
                 newWorkout.setDuration(workout.getDuration());
-                Log.d("Andrew",newWorkout.toString());
             }
         });
     }
