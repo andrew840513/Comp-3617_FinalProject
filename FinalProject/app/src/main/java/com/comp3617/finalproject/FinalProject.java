@@ -1,8 +1,8 @@
 package com.comp3617.finalproject;
 
-import com.comp3617.finalproject.model.Workout;
-
 import android.app.Application;
+
+import com.comp3617.finalproject.model.Workout;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -12,6 +12,7 @@ import io.realm.RealmConfiguration;
  */
 
 public class FinalProject extends Application {
+
 	@Override
 	public void onCreate() {
 		super.onCreate();

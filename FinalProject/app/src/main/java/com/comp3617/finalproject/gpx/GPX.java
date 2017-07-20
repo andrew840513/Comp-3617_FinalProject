@@ -1,15 +1,15 @@
 package com.comp3617.finalproject.gpx;
 
-import java.util.List;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.NamespaceList;
 import org.simpleframework.xml.Root;
 
+import java.util.List;
+
 /**
- * Created by Andrew on 2017-07-12.
+ * Created by Andrew on 2017-07-12
  */
 @Root(name = "gpx")
 @NamespaceList({ @Namespace(reference = "http://www.topografix.com/GPX/1/1"),

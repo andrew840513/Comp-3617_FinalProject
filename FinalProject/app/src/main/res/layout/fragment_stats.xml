@@ -10,36 +10,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white">
+
         <Chronometer
             android:id="@+id/duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:textSize="50sp"
-            android:text="@string/stats_durationText"
             android:layout_above="@+id/durationLbl"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:text="@string/stats_durationText"
+            android:textSize="50sp" />
+
         <TextView
             android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
             android:layout_marginEnd="14dp"
             android:fontFamily="sans-serif-smallcaps"
             android:text="@string/stats_distanceText"
             android:textColor="@color/black"
-            android:textSize="50sp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:textSize="50sp" />
 
         <TextView
             android:id="@+id/durationLbl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/stats_durationLbl"
-            android:textColor="@color/black"
             android:layout_alignBaseline="@+id/distanceLbl"
             android:layout_alignBottom="@+id/distanceLbl"
-            android:layout_alignStart="@+id/duration" />
+            android:layout_alignStart="@+id/duration"
+            android:text="@string/stats_durationLbl"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/distanceLbl"
@@ -47,8 +49,8 @@
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/distance"
             android:layout_below="@+id/distance"
-            android:textColor="@color/black"
-            android:text="@string/stats_distanceLbl" />
+            android:text="@string/stats_distanceLbl"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/startBtn"
@@ -58,9 +60,9 @@
             android:layout_below="@+id/distanceLbl"
             android:layout_marginTop="14dp"
             android:background="@color/statsBtn"
+            android:clickable="true"
             android:text="@string/stats_startWorkout"
             android:textColor="@drawable/start_click"
-            android:clickable="true"
             android:textStyle="bold" />
     </RelativeLayout>
 
